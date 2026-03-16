@@ -1,8 +1,16 @@
+import logging
+
 import requests
 
+REQUEST_TIMEOUT_SECONDS = 5
 
-REQUEST_TIMEOUT_SECONDS=5
 
-async def get_public_ip() -> str:
-    response = await requests.get('https://api.ipify.org/?format=json', timeout=REQUEST_TIMEOUT_SECONDS).json()
-    return response["ip"]
+# Check how to improve with non-blocking calls (httpx) for studying purposes
+def get_public_ip() -> str | None:
+    try:
+        response = requests.get('https://api.ipify.org/?format=json', timeout=REQUEST_TIMEOUT_SECONDS).json()
+        response.raise_for_status()
+        return response["ip"]
+    except Exception as exception:
+        logging.error(f"Failed to obtain public IP address: {exception}.")
+        return None

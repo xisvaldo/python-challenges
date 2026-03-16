@@ -1,31 +1,51 @@
 import logging
-from logging import Formatter, FileHandler
-
+import sys
+from logging import FileHandler
+from types import TracebackType
+from typing import Type
 
 INFO_LOG_FILE_NAME = "info.log"
 ERROR_LOG_FILE_NAME = "error.log"
+LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 
-class Logger:
-    logger: logging.Logger
-    formatter: Formatter
 
-    def __init__(self):
-        self.logger = logging.getLogger()
-        self.formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+def configure_logging() -> None:
+    logger = logging.getLogger()
+    if logger.handlers:
+        return
 
-        info_log_handler = self._create_info_log()
-        error_log_handler = self._create_error_log()
-        self.logger.addHandler(info_log_handler)
-        self.logger.addHandler(error_log_handler)
+    logger.setLevel(logging.INFO)
 
-    def _create_info_log(self) -> FileHandler:
-        return self._create_handler(log_level=logging.INFO, file_name=INFO_LOG_FILE_NAME)
+    # Here we could also find a way to map CRITICAL to ERROR handler and WARNING to INFO handler
+    info_log_handler = _create_info_log()
+    error_log_handler = _create_error_log()
+    logger.addHandler(info_log_handler)
+    logger.addHandler(error_log_handler)
 
-    def _create_error_log(self) -> FileHandler:
-        return self._create_handler(log_level=logging.ERROR, file_name=ERROR_LOG_FILE_NAME)
+    def handle_exceptions(
+            exception_type: Type[BaseException],
+            exception_value: BaseException,
+            traceback_object: TracebackType) -> None:
+        if issubclass(exception_type, KeyboardInterrupt):
+            sys.__excepthook__(exception_type, exception_value, traceback_object)
+            return
 
-    def _create_handler(self, log_level: int | str, file_name: str) -> FileHandler:
-        file_handler = logging.FileHandler(file_name)
-        file_handler.setFormatter(self.formatter)
-        file_handler.setLevel(log_level)
-        return file_handler
+        logging.error(msg="Uncaught exception", exc_info=(exception_type, exception_value, traceback_object))
+
+    sys.excepthook = handle_exceptions
+
+
+def _create_info_log() -> FileHandler:
+    return _create_handler(log_level=logging.INFO, file_name=INFO_LOG_FILE_NAME)
+
+
+def _create_error_log() -> FileHandler:
+    return _create_handler(log_level=logging.ERROR, file_name=ERROR_LOG_FILE_NAME)
+
+
+def _create_handler(log_level: int | str, file_name: str) -> FileHandler:
+    file_handler = logging.FileHandler(file_name)
+    file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
+    file_handler.setLevel(log_level)
+    file_handler.addFilter(lambda record: record.levelno == log_level)
+    return file_handler
