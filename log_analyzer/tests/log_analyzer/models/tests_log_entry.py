@@ -15,10 +15,20 @@ class TestsLogEntry(unittest.TestCase):
         )
         self.assertEqual(entry.ip, "192.168.1.1")
 
-    def test_invalid_timestamp(self):
+    def test_invalid_timestamp_month(self):
         with self.assertRaises(ValueError):
             LogEntry(
                 timestamp="2026-99-17 15:25:08",
+                ip="192.168.1.1",
+                method="GET",
+                endpoint="/home",
+                status_code=200
+            )
+
+    def test_invalid_timestamp_day(self):
+        with self.assertRaises(ValueError):
+            LogEntry(
+                timestamp="2026-02-31 15:25:08",
                 ip="192.168.1.1",
                 method="GET",
                 endpoint="/home",
