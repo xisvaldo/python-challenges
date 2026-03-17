@@ -1,13 +1,16 @@
 import csv
 import logging
-from typing import Iterable
+from pathlib import Path
+from typing import Iterable, Union
+
+from log_analyzer.src.log_analyzer.models.log_entry import LogEntry
 
 
-def write_csv_results(log_entries: Iterable, output_path: str):
+def write_csv_results(log_entries: Iterable[LogEntry], output_path: Union[str, Path]):
     logging.info(f"Writing results to {output_path}.")
 
     try:
-        with open(output_path, "w", newline="") as file:
+        with open(output_path, "w", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=["ip", "status_code"])
             writer.writeheader()
 

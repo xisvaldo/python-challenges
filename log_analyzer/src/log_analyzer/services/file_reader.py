@@ -1,8 +1,9 @@
 import logging
-from typing import Generator
+from pathlib import Path
+from typing import Generator, Union
 
 
-def read_logs(path: str) -> Generator[str, None, None]:
+def read_logs(path: Union[str, Path]) -> Generator[str, None, None]:
     logging.info(f"Reading logs from {path}.")
 
     try:
@@ -11,7 +12,7 @@ def read_logs(path: str) -> Generator[str, None, None]:
                 line = line.strip()
                 if not line:
                     continue
-                    
+
                 yield line
     except FileNotFoundError:
         logging.error(f"File not found: {path}.")
