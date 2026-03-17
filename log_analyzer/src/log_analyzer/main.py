@@ -19,7 +19,7 @@ def main(input_file: str):
     client_ip = get_public_ip()
     lines = read_logs(input_file)
     parsed_log_entries = list(parse_log_entries(lines))
-    client_error_count = count_errors_per_ip(parsed_log_entries)
+    client_error_count = count_errors_per_ip(log_entries=parsed_log_entries, public_ip=client_ip)
 
     write_csv_results(log_entries=parsed_log_entries, output_path=RESULTS_FILE_NAME)
     logging.info(f"Client error count: {client_error_count}.")
