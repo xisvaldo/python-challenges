@@ -1,9 +1,12 @@
 import re
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Self
 
 MIN_HTTP_STATUS_CODE = 100
 MAX_HTTP_STATUS_CODE = 599
+FILE_LINE_PARTS = 4
+METHOD_ENDPOINT_LINE_PARTS = 2
 
 
 @dataclass
@@ -22,8 +25,9 @@ class LogEntry:
         self._validate_status_code()
 
     def _validate_timestamp(self):
-        timestamp_pattern = r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$"
-        if not re.match(timestamp_pattern, self.timestamp):
+        try:
+            datetime.strptime(self.timestamp, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
             raise ValueError(f"Invalid timestamp: {self.timestamp}.")
 
     def _validate_ip(self):
@@ -49,11 +53,11 @@ class LogEntry:
     def from_file_line(cls, line: str) -> Self:
         try:
             parts = [part.strip() for part in line.split("|")]
-            if len(parts) != 4:
+            if len(parts) != FILE_LINE_PARTS:
                 raise ValueError(f"Invalid log entry: {line}.")
 
             method_endpoint = parts[2].split(" ")
-            if len(method_endpoint) != 2:
+            if len(method_endpoint) != METHOD_ENDPOINT_LINE_PARTS:
                 raise ValueError(f"Invalid method/endpoint format: {parts[2]}.")
 
             return LogEntry(
