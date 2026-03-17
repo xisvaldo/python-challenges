@@ -28,6 +28,9 @@ def main(input_file: str):
 
 if __name__ == "__main__":
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument("-i", "--input_file", help="Input log file")
+    argument_parser.add_argument("-i", "--input_file", help="Input log file.")
+    argument_parser.add_argument("--generate-sample", action="store_true", help="Generate a sample log file.")
+    argument_parser.add_argument("--sample_size", default=100_000, help="Number of entries in the sample log file.")
     args = argument_parser.parse_args()
+
     main(args.input_file)
