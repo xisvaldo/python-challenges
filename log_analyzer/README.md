@@ -24,6 +24,7 @@ log_analyzer/
 ├── models/
 ├── services/
 ├── utils/
+├── logs/
 ├── outputs/
 ├── tests/
 ├── main.py
