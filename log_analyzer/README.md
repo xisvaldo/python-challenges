@@ -49,7 +49,6 @@ log_analyzer/
 
 ```bash
 git clone https://github.com/xisvaldo/python-challenges.git
-cd python-challenges/log_analyzer
 ```
 
 2. Install dependencies:
