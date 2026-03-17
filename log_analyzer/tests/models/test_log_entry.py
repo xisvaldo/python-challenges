@@ -1,6 +1,6 @@
 import unittest
 
-from log_analyzer.src.log_analyzer.models.log_entry import LogEntry
+from log_analyzer.models.log_entry import LogEntry
 
 
 class TestsLogEntry(unittest.TestCase):

@@ -1,7 +1,7 @@
 import logging
 from typing import Iterable, Generator
 
-from log_analyzer.src.log_analyzer.models.log_entry import LogEntry
+from log_analyzer.models.log_entry import LogEntry
 
 
 def parse_log_entries(lines: Iterable[str]) -> Generator[LogEntry, None, None]:

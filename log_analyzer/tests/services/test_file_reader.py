@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from log_analyzer.src.log_analyzer.services.file_reader import read_logs
+from log_analyzer.services.file_reader import read_logs
 
 
 class TestFileReader(unittest.TestCase):

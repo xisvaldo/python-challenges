@@ -4,8 +4,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from log_analyzer.src.log_analyzer.models.log_entry import LogEntry
-from log_analyzer.src.log_analyzer.services.file_writer import write_csv_results
+from log_analyzer.models.log_entry import LogEntry
+from log_analyzer.services.file_writer import write_csv_results
 
 
 class TestFileWriter(unittest.TestCase):

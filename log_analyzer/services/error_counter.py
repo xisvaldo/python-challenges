@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from log_analyzer.src.log_analyzer.models.log_entry import LogEntry
+from log_analyzer.models.log_entry import LogEntry
 
 HTTP_ERROR_STATUS_CODE_RANGE = 400
 

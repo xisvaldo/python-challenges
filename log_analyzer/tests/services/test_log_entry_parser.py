@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from log_analyzer.src.log_analyzer.models.log_entry import LogEntry
-from log_analyzer.src.log_analyzer.services.log_entry_parser import parse_log_entries
+from log_analyzer.models.log_entry import LogEntry
+from log_analyzer.services.log_entry_parser import parse_log_entries
 
 
 class TestLogEntryParser(unittest.TestCase):

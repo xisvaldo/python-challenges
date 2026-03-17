@@ -1,7 +1,7 @@
 import unittest
 
-from log_analyzer.src.log_analyzer.models.log_entry import LogEntry
-from log_analyzer.src.log_analyzer.services.error_counter import count_errors_per_ip
+from log_analyzer.models.log_entry import LogEntry
+from log_analyzer.services.error_counter import count_errors_per_ip
 
 
 class TestErrorCounter(unittest.TestCase):
